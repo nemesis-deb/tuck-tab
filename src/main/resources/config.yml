@@ -1,0 +1,77 @@
+# Mob Head Leaderboard Configuration
+
+# Update interval for tab list (in ticks, 20 ticks = 1 second)
+update-interval: 40
+
+# Number of top players to show in leaderboard
+leaderboard-size: 10
+
+# Display settings
+display:
+  # Main title (used when animated-title is false)
+  title: "&6&l⚔ Mob Head Achievements ⚔"
+  
+  # Enable animated title
+  animated-title: true
+  
+  # Animation frames (cycles through these)
+  animated-frames:
+    - "&6&l✦ &e&lMob Head Achievements &6&l✦"
+    - "&e&l✦ &6&lMob Head Achievements &e&l✦"
+    - "&6&l✦ &e&lMob Head Achievements &6&l✦"
+    - "&e&l✦ &6&lMob Head Achievements &e&l✦"
+  
+  # Separator line
+  separator: "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  
+  # Server information section
+  show-server-info: true
+  server-info:
+    online-players: "&7Players: &a{online}&7/&a{max}"
+    show-tps: true
+    tps: "&7TPS: {tps_color}{tps}"
+    show-time: false
+    time: "&7Time: &f{time}"
+  
+  # Player statistics section
+  show-player-stats: true
+  player-stats:
+    title: "&b&lYour Stats"
+    heads: "&7Mob Heads: &e{count}"
+    rank: "&7Rank: &6#{rank}"
+    progress: "&7Next Rank: &c{needed} more"
+    show-skill-progress: true
+  
+  # Skill progression bar (requires SkillsPlugin)
+  skill-progress:
+    title: "&d⚔ {skill} &7Lv.{level}"
+    bar-length: 20
+    filled-char: "█"
+    empty-char: "░"
+    filled-color: "&a"
+    empty-color: "&7"
+    xp-format: " &f{current}&7/&f{required} XP"
+  
+  # Show leaderboard in footer
+  show-leaderboard: true
+  
+  # Custom footer message
+  footer-message: |
+    
+    &7Collect mob heads to climb the ranks!
+    &8Visit &b/headstats &8for details
+
+# Leaderboard format
+leaderboard-format:
+  title: "&e&l⚡ Top Collectors ⚡"
+  
+  # Entry formats
+  entry: "{medal} &f{player} &8- &a{count} &7heads"
+  current-player: "{medal} &b{player} &8- &a{count} &7heads &8(&7You&8)"
+  
+  # Medal/rank display
+  medals:
+    first: "&6&l👑 #1"
+    second: "&7&l🥈 #2"
+    third: "&c&l🥉 #3"
+    default: "&7#{rank}"

@@ -1,0 +1,25 @@
+name: MobHeadLeaderboard
+version: ${project.version}
+main: com.mobheads.leaderboard.MobHeadLeaderboard
+api-version: 1.20
+author: YourName
+description: Displays mob head achievement leaderboard in tab list
+softdepend: [SkillsPlugin]
+
+commands:
+  headstats:
+    description: View your mob head achievement stats
+    usage: /headstats [player]
+    permission: mobheads.stats
+  headreload:
+    description: Reload the plugin configuration
+    usage: /headreload
+    permission: mobheads.reload
+
+permissions:
+  mobheads.stats:
+    description: View head statistics
+    default: true
+  mobheads.reload:
+    description: Reload plugin configuration
+    default: op
