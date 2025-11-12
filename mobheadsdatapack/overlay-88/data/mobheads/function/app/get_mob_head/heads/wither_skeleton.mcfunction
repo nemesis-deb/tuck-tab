@@ -1,1 +1,0 @@
-give @s wither_skeleton_skull
