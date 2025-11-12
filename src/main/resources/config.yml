@@ -9,17 +9,17 @@ leaderboard-size: 10
 # Display settings
 display:
   # Main title (used when animated-title is false)
-  title: "&6&l⚔ Tuck2 ⚔"
+  title: "&6&l⚔ Tuck ⚔"
   
   # Enable animated title
   animated-title: true
   
   # Animation frames (cycles through these)
   animated-frames:
-    - "&6&l✦ &e&lTuck2 &6&l✦"
-    - "&e&l✦ &6&lTuck2 &e&l✦"
-    - "&6&l✦ &e&lTuck2 &6&l✦"
-    - "&e&l✦ &6&lTuck2 &e&l✦"
+    - "&6&l✦ &e&lTuck &6&l✦"
+    - "&e&l✦ &6&lTuck &e&l✦"
+    - "&6&l✦ &e&lTuck &6&l✦"
+    - "&e&l✦ &6&lTuck &e&l✦"
   
   # Separator line
   separator: "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
