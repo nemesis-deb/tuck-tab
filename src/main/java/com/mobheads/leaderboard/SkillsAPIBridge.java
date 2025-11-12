@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,7 +17,6 @@ public class SkillsAPIBridge {
     private Plugin skillsPlugin;
     private Object playerDataManager;
     private boolean isAvailable = false;
-    private final Map<UUID, SkillData> lastSkillCache = new HashMap<>();
     
     public SkillsAPIBridge() {
         try {
@@ -47,83 +45,33 @@ public class SkillsAPIBridge {
             
             if (profile == null) return null;
             
-            // Get all skills and find the one with highest XP progress or most recent change
+            // Get the last skill that gained XP
+            Method getLastSkillXP = profile.getClass().getMethod("getLastSkillXP");
+            Object lastSkillType = getLastSkillXP.invoke(profile);
+            
+            if (lastSkillType == null) return null;
+            
+            // Get all skills to retrieve the specific skill data
             Method getSkills = profile.getClass().getMethod("getSkills");
             Map<?, ?> skills = (Map<?, ?>) getSkills.invoke(profile);
             
             if (skills == null || skills.isEmpty()) return null;
             
-            // Check cache first
-            SkillData cached = lastSkillCache.get(player.getUniqueId());
+            // Find the last skill that gained XP
+            Object skill = skills.get(lastSkillType);
+            if (skill == null) return null;
             
-            // Find skill with most progress or use cached
-            SkillData bestSkill = null;
-            double highestProgress = 0;
+            // Extract skill data
+            Method getLevel = skill.getClass().getMethod("getLevel");
+            Method getExperience = skill.getClass().getMethod("getExperience");
+            Method getRequiredExperience = skill.getClass().getMethod("getRequiredExperience");
             
-            for (Map.Entry<?, ?> entry : skills.entrySet()) {
-                Object skillType = entry.getKey();
-                Object skill = entry.getValue();
-                
-                if (skill == null) continue;
-                
-                // Extract skill data
-                Method getLevel = skill.getClass().getMethod("getLevel");
-                Method getExperience = skill.getClass().getMethod("getExperience");
-                Method getRequiredExperience = skill.getClass().getMethod("getRequiredExperience");
-                
-                int level = (int) getLevel.invoke(skill);
-                double experience = (double) getExperience.invoke(skill);
-                double required = (double) getRequiredExperience.invoke(skill);
-                
-                String skillName = skillType.toString();
-                SkillData currentSkill = new SkillData(skillName, level, experience, required);
-                
-                // Check if this skill has changed (gained XP)
-                if (cached != null && cached.getSkillName().equals(skillName)) {
-                    if (experience > cached.getCurrentXP() || level > cached.getLevel()) {
-                        // This skill gained XP, update cache and return it
-                        lastSkillCache.put(player.getUniqueId(), currentSkill);
-                        return currentSkill;
-                    }
-                }
-                
-                // Track skill with highest progress
-                double progress = experience / required;
-                if (progress > highestProgress) {
-                    highestProgress = progress;
-                    bestSkill = currentSkill;
-                }
-            }
+            int level = (int) getLevel.invoke(skill);
+            double experience = (double) getExperience.invoke(skill);
+            double required = (double) getRequiredExperience.invoke(skill);
             
-            // If we have a cached skill and it's still valid, use it
-            if (cached != null) {
-                // Verify cached skill still exists and update its data
-                for (Map.Entry<?, ?> entry : skills.entrySet()) {
-                    Object skillType = entry.getKey();
-                    if (skillType.toString().equals(cached.getSkillName())) {
-                        Object skill = entry.getValue();
-                        Method getLevel = skill.getClass().getMethod("getLevel");
-                        Method getExperience = skill.getClass().getMethod("getExperience");
-                        Method getRequiredExperience = skill.getClass().getMethod("getRequiredExperience");
-                        
-                        int level = (int) getLevel.invoke(skill);
-                        double experience = (double) getExperience.invoke(skill);
-                        double required = (double) getRequiredExperience.invoke(skill);
-                        
-                        SkillData updated = new SkillData(cached.getSkillName(), level, experience, required);
-                        lastSkillCache.put(player.getUniqueId(), updated);
-                        return updated;
-                    }
-                }
-            }
-            
-            // Use skill with highest progress
-            if (bestSkill != null) {
-                lastSkillCache.put(player.getUniqueId(), bestSkill);
-                return bestSkill;
-            }
-            
-            return null;
+            String skillName = lastSkillType.toString();
+            return new SkillData(skillName, level, experience, required);
             
         } catch (Exception e) {
             return null;

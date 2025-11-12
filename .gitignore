@@ -25,6 +25,7 @@ bin/
 
 # VS Code
 .vscode/
+mobheadsdatapack/
 
 # macOS
 .DS_Store
