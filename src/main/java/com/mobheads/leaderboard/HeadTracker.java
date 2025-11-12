@@ -11,10 +11,113 @@ public class HeadTracker {
     
     private final MobHeadLeaderboard plugin;
     private final Map<UUID, Integer> headCounts;
+    private final Set<String> mobHeadAdvancements;
     
     public HeadTracker(MobHeadLeaderboard plugin) {
         this.plugin = plugin;
         this.headCounts = new HashMap<>();
+        this.mobHeadAdvancements = initializeMobHeadAdvancements();
+    }
+    
+    private Set<String> initializeMobHeadAdvancements() {
+        Set<String> advancements = new HashSet<>();
+        // Passive Mobs
+        advancements.add("mobheads:allay");
+        advancements.add("mobheads:axolotl");
+        advancements.add("mobheads:bat");
+        advancements.add("mobheads:camel");
+        advancements.add("mobheads:cat");
+        advancements.add("mobheads:chicken");
+        advancements.add("mobheads:cod");
+        advancements.add("mobheads:cow");
+        advancements.add("mobheads:donkey");
+        advancements.add("mobheads:fox");
+        advancements.add("mobheads:frog");
+        advancements.add("mobheads:glow_squid");
+        advancements.add("mobheads:horse");
+        advancements.add("mobheads:mooshroom");
+        advancements.add("mobheads:mule");
+        advancements.add("mobheads:ocelot");
+        advancements.add("mobheads:parrot");
+        advancements.add("mobheads:pig");
+        advancements.add("mobheads:pufferfish");
+        advancements.add("mobheads:rabbit");
+        advancements.add("mobheads:salmon");
+        advancements.add("mobheads:sheep");
+        advancements.add("mobheads:sniffer");
+        advancements.add("mobheads:snow_golem");
+        advancements.add("mobheads:squid");
+        advancements.add("mobheads:strider");
+        advancements.add("mobheads:tadpole");
+        advancements.add("mobheads:tropical_fish");
+        advancements.add("mobheads:turtle");
+        advancements.add("mobheads:villager");
+        advancements.add("mobheads:wandering_trader");
+        
+        // Neutral Mobs
+        advancements.add("mobheads:bee");
+        advancements.add("mobheads:cave_spider");
+        advancements.add("mobheads:dolphin");
+        advancements.add("mobheads:drowned");
+        advancements.add("mobheads:enderman");
+        advancements.add("mobheads:goat");
+        advancements.add("mobheads:iron_golem");
+        advancements.add("mobheads:llama");
+        advancements.add("mobheads:panda");
+        advancements.add("mobheads:piglin");
+        advancements.add("mobheads:polar_bear");
+        advancements.add("mobheads:spider");
+        advancements.add("mobheads:trader_llama");
+        advancements.add("mobheads:wolf");
+        advancements.add("mobheads:zombified_piglin");
+        
+        // Hostile Mobs
+        advancements.add("mobheads:blaze");
+        advancements.add("mobheads:creeper");
+        advancements.add("mobheads:elder_guardian");
+        advancements.add("mobheads:endermite");
+        advancements.add("mobheads:evoker");
+        advancements.add("mobheads:ghast");
+        advancements.add("mobheads:guardian");
+        advancements.add("mobheads:hoglin");
+        advancements.add("mobheads:husk");
+        advancements.add("mobheads:magma_cube");
+        advancements.add("mobheads:phantom");
+        advancements.add("mobheads:piglin_brute");
+        advancements.add("mobheads:pillager");
+        advancements.add("mobheads:ravager");
+        advancements.add("mobheads:shulker");
+        advancements.add("mobheads:silverfish");
+        advancements.add("mobheads:skeleton");
+        advancements.add("mobheads:slime");
+        advancements.add("mobheads:stray");
+        advancements.add("mobheads:vex");
+        advancements.add("mobheads:vindicator");
+        advancements.add("mobheads:warden");
+        advancements.add("mobheads:witch");
+        advancements.add("mobheads:wither_skeleton");
+        advancements.add("mobheads:zoglin");
+        advancements.add("mobheads:zombie");
+        advancements.add("mobheads:zombie_villager");
+        
+        // Boss Mobs
+        advancements.add("mobheads:ender_dragon");
+        advancements.add("mobheads:wither");
+        
+        return advancements;
+    }
+    
+    public boolean isMobHeadAdvancement(String key) {
+        return mobHeadAdvancements.contains(key);
+    }
+    
+    public void updateHeadCount(UUID uuid) {
+        // Force recalculation
+        headCounts.remove(uuid);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+        if (player.isOnline()) {
+            getHeadCount(uuid);
+        }
     }
     
     public int getHeadCount(Player player) {

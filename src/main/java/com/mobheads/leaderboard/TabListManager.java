@@ -169,7 +169,7 @@ public class TabListManager {
             .replace("{skill}", skillData.getFormattedSkillName())
             .replace("{level}", String.valueOf(skillData.getLevel())))).append("\n");
         
-        // Progress bar
+        // Progress bar with spacing
         int barLength = plugin.getConfig().getInt("display.skill-progress.bar-length", 20);
         String filledChar = plugin.getConfig().getString("display.skill-progress.filled-char", "█");
         String emptyChar = plugin.getConfig().getString("display.skill-progress.empty-char", "░");
@@ -179,6 +179,9 @@ public class TabListManager {
         double percentage = skillData.getProgressPercentage();
         int filled = (int) Math.round((percentage / 100.0) * barLength);
         int empty = barLength - filled;
+        
+        // Add left spacing
+        bar.append("  ");
         
         bar.append(color(filledColor));
         for (int i = 0; i < filled; i++) {

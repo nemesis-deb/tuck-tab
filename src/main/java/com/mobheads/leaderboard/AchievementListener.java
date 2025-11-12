@@ -17,9 +17,9 @@ public class AchievementListener implements Listener {
         String key = event.getAdvancement().getKey().toString();
         
         // Check if it's a mob head advancement
-        if (key.startsWith("mobheads:")) {
-            // Update the player's count
-            headTracker.getHeadCount(event.getPlayer());
+        if (headTracker.isMobHeadAdvancement(key)) {
+            // Force update the player's count
+            headTracker.updateHeadCount(event.getPlayer().getUniqueId());
         }
     }
 }
